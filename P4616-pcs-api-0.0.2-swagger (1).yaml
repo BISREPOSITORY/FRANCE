@@ -1,0 +1,957 @@
+openapi: 3.0.0
+info:
+  title: ORDS generated API for pcs_api
+  version: "0.0.2"
+servers:
+  - url: https://agkqslkkaj91pge-dbeurprod.adb.eu-frankfurt-1.oraclecloudapps.com/ords/spartan/api
+security:
+  - bearerAuth: []  
+paths:
+  /authenticate/:
+    post:
+      tags: 
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: JWT Token  
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        400:
+          $ref: '#/components/responses/UnauthorizedError'
+  /breeds/:
+    get:
+      tags:
+        - Pet Type
+      responses:
+        200:
+          description: A list of all the breeds
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Breeds'
+        400:
+          $ref: '#/components/responses/UnauthorizedError'
+  /breeds/{petTypeId}:
+    get:
+      tags:
+        - Pet Type
+      responses:
+        200:
+          description: All breeds for a specific Pet Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Breeds'
+        400:
+          $ref: '#/components/responses/UnauthorizedError'    
+      parameters:
+        - name: petTypeId
+          in: path
+          required: true
+          description: The code of a specific Pet Type
+          schema:
+            type: string
+  /countries/:
+    get:
+      responses:
+        200:
+          description: A list of all the countries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Countries'
+        400:
+          $ref: '#/components/responses/UnauthorizedError'
+  /countries/{getByCountryCode}:
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: getByCountryCode
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  /customer/:
+    post:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PAYLOAD2"
+        required: true
+  "/customer/{customerId}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+    put:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PAYLOAD3"
+        required: true
+  /driver-options/:
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  "/driver-options/{getByShipViaCode}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: getByShipViaCode
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+  /heartbeat/:
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+  /login/:
+    post:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      requestBody:
+        $ref: "#/components/requestBodies/PAYLOAD1"
+  /pet-types/:
+    get:
+      tags:
+        - Pet Type
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+  "/pet-types/{petTypeId}":
+    get:
+      tags:
+        - Pet Type
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: petTypeId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+  /pet/:
+    post:
+      description: bob
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: "#/components/requestBodies/PAYLOAD4"
+  "/pet/customer/{customerId}":
+    get:
+      description: Bob
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  "/pet/tag/{scheduleId}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: scheduleId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  "/pet/{scheduleId}":
+    get:
+      description: Bob
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: scheduleId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+    put:
+      description: Bob
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: scheduleId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: "#/components/requestBodies/PAYLOAD5"
+  "/products/class/{class}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: class
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  "/products/{productId}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  /route/:
+    post:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: "#/components/requestBodies/PAYLOAD4"
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  /route/schedule:
+    post:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: "#/components/requestBodies/PAYLOAD4"
+  /route/schedule/pending:
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+  "/route/schedule/{date}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: date
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  "/route/{routeId}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: routeId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+        - name: X-APEX-STATUS-CODE
+          in: header
+          required: true
+          schema:
+            type: integer
+    put:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: routeId
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: "#/components/requestBodies/PAYLOAD5"
+  /states/:
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  "/states/country/{getByCountryCode}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: getByCountryCode
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+  "/states/{getByStateCode}":
+    get:
+      responses:
+        "200":
+          description: output of the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      parameters:
+        - name: body
+          in: query
+          description: Implicit parameter
+          schema:
+            type: string
+        - name: getByStateCode
+          in: path
+          required: true
+          description: implicit
+          schema:
+            type: string
+            pattern: ^[^/]+$
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: TraceId
+          in: header
+          required: true
+          schema:
+            type: integer
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer Token supplied by the /AUTH call
+  parameters:
+    schedule_id:
+        in: path
+        name: schedule_id
+        required: true
+        schema:
+          type: string
+          maximum: 10
+        description: The ID of the pet
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  requestBodies:
+    PAYLOAD4:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PAYLOAD4"
+      required: true
+    PAYLOAD1:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PAYLOAD1"
+      required: true
+    PAYLOAD5:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PAYLOAD5"
+      required: true
+  schemas:
+    Breeds:
+      properties: 
+        data: 
+          type: "array"
+          items: 
+            type: "object"
+            properties: 
+              PET_BREED_NAME: 
+                type: "string"
+              PET_TYPE_CODE: 
+                type: "string"
+              CREATE_DTTM: 
+                type: "string"
+              CREATE_USER: 
+                type: "string"
+              CLIENT_ID: 
+                type: "string"
+              UPDATE_DTTM: 
+                type: "string"
+              UPDATE_USER: 
+                type: "string"
+              PET_BREED_ID: 
+                type: "number"
+    Countries:
+      required: 
+        - "data"
+      properties: 
+        data: 
+          type: "array"
+          items: 
+            type: "object"
+            properties: 
+              COUNTRY_CODE: 
+                type: "string"
+              DESCRIPTION: 
+                type: "string"
+              APP_FLAG: 
+                type: "string"
+              CREATE_DTTM: 
+                type: "string"
+              CREATE_USER: 
+                type: "string"
+              CLIENT_ID: 
+                type: "string"
+    PAYLOAD1:
+      properties:
+        body:
+          type: string
+    PAYLOAD2:
+      properties:
+        Authorization:
+          type: string
+        TraceId:
+          type: integer
+        body:
+          type: string
+    PAYLOAD3:
+      properties:
+        TraceId:
+          type: integer
+        Authorization:
+          type: string
+        body:
+          type: string
+    PAYLOAD4:
+      properties:
+        Authorization:
+          type: string
+        TraceId:
+          type: integer
+        body:
+          type: string
+    PAYLOAD5:
+      properties:
+        Authorization:
+          type: string
+        TraceId:
+          type: integer
+        body:
+          type: string
